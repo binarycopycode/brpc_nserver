@@ -1,0 +1,78 @@
+// Licensed to the Apache Software Foundation (ASF) under one
+// or more contributor license agreements.  See the NOTICE file
+// distributed with this work for additional information
+// regarding copyright ownership.  The ASF licenses this file
+// to you under the Apache License, Version 2.0 (the
+// "License"); you may not use this file except in compliance
+// with the License.  You may obtain a copy of the License at
+//
+//   http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing,
+// software distributed under the License is distributed on an
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+// KIND, either express or implied.  See the License for the
+// specific language governing permissions and limitations
+// under the License.
+
+syntax="proto2";
+option cc_generic_services = true;
+
+package nserver;
+
+
+// for rdma transfer npcbuf data
+message fileRequest {
+      required string path_date = 1;
+};
+message fileResponse {
+      required bool trans_succ = 1;
+};
+
+//for heart beat and load data task
+message loadDateRequest{
+      required bool load_data = 1;
+      required string dir_path = 2;
+}
+message loadDateResponse{
+      repeated string path_date_list = 1;
+}
+
+service DatanodeService {
+      rpc TransFile(fileRequest) returns (fileResponse);
+      rpc LoadDate(loadDateRequest) returns (loadDateResponse);
+};
+
+//for data node register ip to mainserver
+message node_regRequest{
+
+};
+message node_regResponse{
+      required bool reg_succ = 1;
+      optional string node_ip = 2;
+};
+
+//for client to add data loading directory path to mainserver
+message dir_pathRequest{
+      required string dir_path = 1;
+}
+message dir_pathResponse{
+      required bool add_succ = 1;
+}
+
+//for client ask mainserver to load data to data node 
+message data_collectRequest{
+
+}
+message data_collectResponse{
+      required bool collect_succ = 1;
+}
+
+service MainnodeService{
+      rpc RegisterDatanodeIp(node_regRequest) returns (node_regResponse);
+      rpc AddDirpath(dir_pathRequest) returns (dir_pathResponse);
+      rpc LoadData(data_collectRequest) returns (data_collectResponse);
+}
+
+
+

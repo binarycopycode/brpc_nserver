@@ -1,2 +1,4 @@
 # brpc_nserver
-未开发完成
+Code Archive
+project not finished
+
